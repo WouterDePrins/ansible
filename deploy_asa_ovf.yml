@@ -1,0 +1,61 @@
+---
+    - hosts: localhost
+      become: no
+      gather_facts: False
+      connection: local
+      tasks:
+      - name: Deploy ASA
+        vmware_deploy_ovf:
+          hostname: "{{ vm_name }}"
+          username: "{{ vm_name }}"
+          password: "{{ vm_name }}"
+          validate_certs: no
+          name: "{{ vm_name }}"
+          datacenter: "{{ vm_datacenter }}"
+          cluster: "{{ vm_cluster  }}"
+          datastore: "{{ vm_datastore }}"
+          disk_provisioning: thin
+          networks: 
+            "Management0-0": "{{ asa_mgmt }}"
+            "GigabitEthernet0-0": "{{ asa_consumer }}"
+            "GigabitEthernet0-1": "{{ asa_provider }}"
+            "GigabitEthernet0-2": "{{ asa_provider }}"
+            "GigabitEthernet0-3": "{{ asa_provider }}"
+            "GigabitEthernet0-4": "{{ asa_provider }}"
+            "GigabitEthernet0-5": "{{ asa_provider }}"
+            "GigabitEthernet0-6": "{{ asa_provider }}"
+            "GigabitEthernet0-7": "{{ asa_provider }}"
+            "GigabitEthernet0-8": "{{ asa_provider }}"
+          ova: asav-vi.ovf
+          allow_duplicates: no
+          power_on: yes
+          fail_on_spec_warnings: yes
+          inject_ovf_env: yes
+          properties:
+            ClientIPv4: "0.0.0.0"
+            ClientIPv4Mask: "0.0.0.0"
+            DHCP: "False"
+            DNSServerIPv4: "0.0.0.0"
+            FWMode: "routed"
+            HAActiveIPv4: "0.0.0.0"
+            HARole: "HA Primary"
+            HAStandbyIPv4: "0.0.0.0"
+            HASubnetIPv4: "0.0.0.0"
+            HTTPEnable: "True"
+            Hostname: ""
+            ManagementIPv4: "{{ asa_mgmt_ip }}"
+            ManagementIPv4DefaultGateway: "{{ asa_mgmt_dg }}"
+            ManagementIPv4Subnet: "{{ asa_mgmt_subnet }}"
+            ManagementStandbyIPv4: "0.0.0.0"
+            Password: "{{ asa_password }}"
+            RESTEnable: "True"
+            RouteDefault: "Default Route"
+            SCHProxyDest: ""
+            SCHProxyPort: ""
+            SSHEnable: "True"
+            SSHIPv4: "0.0.0.0"
+            SSHIPv4Mask: "0.0.0.0"
+            Username: "{{ asa_username }}"
+        delegate_to: localhost
+        register: find_output
+      - debug:
