@@ -1,0 +1,18 @@
+---
+  - hosts: localhost
+    become: no
+    gather_facts: False
+    connection: local
+    tasks:
+    - name: Remove virtual machine
+      vmware_guest:
+        hostname: "{{ hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        validate_certs: no
+        datacenter: "{{ datacenter }}"
+        cluster: "{{ cluster }}"
+        name: "{{ vm_name }}"
+        state: absent
+        force: true
+      delegate_to: localhost
