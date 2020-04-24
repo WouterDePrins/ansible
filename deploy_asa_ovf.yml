@@ -1,4 +1,7 @@
 ---
+# Ansible Playbook to deploy ASAv to vCenter from OVF template. OVF files need to be hosted on the Ansible control server.
+# REST API will automaticall be enabled so once the ASA is up, you can configure it through the API.
+
     - hosts: localhost
       become: no
       gather_facts: False
